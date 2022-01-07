@@ -1,4 +1,4 @@
-import db from "../dbinit.js";
+//import Photo from "../models/Photo";
 
 const photos = {
   data: [
