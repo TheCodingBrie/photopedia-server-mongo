@@ -15,7 +15,7 @@ server.use(express.json());
 
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then((e) => {
+  .then(() => {
     server.listen(PORT, () =>
       console.log(`Server started on port ${PORT}`.rainbow)
     );

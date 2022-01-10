@@ -10,7 +10,7 @@ import {
 const api = express.Router();
 
 api.route("/").get(getAllPhotos).post(addPhoto);
-api.route("/random").get(getRandomPhoto).post(addPhoto);
+api.route("/random").get(getRandomPhoto);
 api.route("/location/:name/photos").get(getPhotoByLocation);
 api.route("/type/:name/photos").get(getPhotoByType);
 
