@@ -5,17 +5,8 @@ const Photo = new Schema({
   title: String,
   url: String,
   type: String,
-  location: String,
-
-  // created_at: { type: Date, default: Date.now },
-  // location: new Schema({
-  //   name: String,
-  //   description: String,
-  //   lattitude: String,
-  //   longitude: String,
-  //   types: String,
-  //   created_at: { type: Date, default: Date.now },
-  // }),
+  location: { type: Schema.ObjectId, ref: "Location" },
+  created_at: { type: Date, default: Date.now },
 });
 
 export default mongoose.model("Photo", Photo);

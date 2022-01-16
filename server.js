@@ -2,11 +2,12 @@ import dotenv from "dotenv";
 import express from "express";
 import colors from "colors";
 import photos from "./api/photos.js";
+import locations from "./api/locations.js";
 import cors from "cors";
 import mongoose from "mongoose";
 
 dotenv.config();
-const PORT = process.env.POT || 3001;
+const PORT = process.env.PORT || 3001;
 const server = express();
 
 server.use(cors());
@@ -25,3 +26,4 @@ mongoose
 
 server.get("/", (req, res) => res.send("Welcome to the photopedia server"));
 server.use("/api/photos", photos);
+server.use("/api/locations", locations);

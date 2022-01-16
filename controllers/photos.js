@@ -1,41 +1,13 @@
 import Photo from "../models/Photo.js";
-
-const photos = {
-  data: [
-    {
-      id: "1",
-      title: "Berchtesgaden National Park",
-      url: "https://live.staticflickr.com/65535/51801704385_9e1f42b065_c.jpg",
-      type: "Nature",
-      location: "here",
-    },
-    {
-      id: "2",
-      title: "Stefan-Pflaum",
-      url: "https://live.staticflickr.com/65535/51801703850_5ead77fad7_k.jpg",
-      type: "Nature",
-      location: "here",
-    },
-    {
-      id: "3",
-      title: "Westhavelland",
-      url: "https://live.staticflickr.com/65535/51800968726_4e24edcbfb_k.jpg",
-      type: "astrophotography",
-      location: "here",
-    },
-    {
-      id: "4",
-      title: "Westhavelland",
-      url: "https://live.staticflickr.com/65535/51801703220_e5abb62433_b.jpg",
-      type: "astrophotography",
-      location: "here",
-    },
-  ],
-};
+import Location from "../models/Location.js";
 
 const getAllPhotos = (req, res) => {
   Photo.find({})
-    .then((result) => console.log(result))
+    .populate("location")
+    .then((result) => {
+      res.json(result);
+      console.log("getAllPhotos");
+    })
     .catch((e) => {
       console.log(e);
       res.send({ error: true });
@@ -44,38 +16,44 @@ const getAllPhotos = (req, res) => {
 
 const getRandomPhoto = async (req, res) => {
   try {
-    res.json(photos.data[Math.floor(Math.random() * photos.data.length)]);
-    console.log("Used getRandomPhoto");
+    const photoArray = await Photo.find({}).populate("location");
+    res.json(photoArray[Math.floor(Math.random() * photoArray.length)]);
+    console.log("getRandomPhoto");
   } catch (err) {
     console.log(err);
   }
 };
 
-const getPhotoByType = async (req, res) => {
+const getPhotosByType = async (req, res) => {
   try {
-    res.send("getPhotoByType");
+    const photosByType = await Photo.find(req.params).populate("location");
+    res.json(photosByType);
+    console.log("getPhotosByType");
   } catch (err) {
     console.log(err);
   }
 };
 
-const getPhotoByLocation = async (req, res) => {
+const getPhotosByLocation = async (req, res) => {
   try {
-    res.send("getPhotoByLocation");
+    const { _id } = await Location.findOne(req.params);
+    const photosByLocation = await Photo.find({ location: _id }).populate(
+      "location"
+    );
+    res.json(photosByLocation);
+    console.log("getPhotoByLocation");
   } catch (err) {
     console.log(err);
   }
 };
 
-// Add validation here or in the app
 const addPhoto = async (req, res) => {
   try {
-    //photos.data.push(req.body);
-    Photo.create({
+    await Photo.create({
       title: req.body.title,
       url: req.body.url,
       type: req.body.type,
-      location: req.body.location,
+      location: req.body.locationId,
     });
     console.log("Used AddPhoto");
     res.send("Your photo was added");
@@ -87,7 +65,7 @@ const addPhoto = async (req, res) => {
 export {
   getAllPhotos,
   getRandomPhoto,
-  getPhotoByType,
-  getPhotoByLocation,
+  getPhotosByType,
+  getPhotosByLocation,
   addPhoto,
 };

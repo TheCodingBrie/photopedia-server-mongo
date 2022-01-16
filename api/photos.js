@@ -2,8 +2,8 @@ import express from "express";
 import {
   getAllPhotos,
   getRandomPhoto,
-  getPhotoByLocation,
-  getPhotoByType,
+  getPhotosByLocation,
+  getPhotosByType,
   addPhoto,
 } from "../controllers/photos.js";
 
@@ -11,7 +11,7 @@ const api = express.Router();
 
 api.route("/").get(getAllPhotos).post(addPhoto);
 api.route("/random").get(getRandomPhoto);
-api.route("/location/:name/photos").get(getPhotoByLocation);
-api.route("/type/:name/photos").get(getPhotoByType);
+api.route("/location/:name/photos").get(getPhotosByLocation);
+api.route("/type/:type/photos").get(getPhotosByType);
 
 export default api;
